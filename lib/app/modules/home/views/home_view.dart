@@ -9,15 +9,47 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HomeView'),
+        title: Text('User List'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
+      body: controller.obx(
+        (data) => ListView.builder(
+          padding: EdgeInsets.all(8),
+          itemCount: data?.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: 
+                      NetworkImage(data![index]['picture']['large']),
+                    ),
+                    title: Text(
+                      data[index]['name']['title'] +
+                      ' ' +
+                      data[index]['name']['title'] +
+                      ' ' +
+                      data[index]['name']['title'],
+                    ),
+                    subtitle: Text(
+                      data[index]['email'],
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    trailing: Text(
+                      "Age : ${data[index]['dob']['age']}",
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
         ),
-      ),
+        onError: (error) => Center(
+          child: Text(error!),
+        )
+      )
     );
   }
 }
